@@ -16,6 +16,7 @@ canvas.grid(column=1, row=0)
 website_label = Label(text='Website:', bg='white')
 website_label.grid(column=0, row=1)
 website_entry = Entry()
+website_entry.focus_set()
 website_entry.grid(column=1, columnspan=2, row=1, sticky=EW)
 
 username_label = Label(text='Email/Username:', bg='white')
