@@ -22,6 +22,7 @@ website_entry.grid(column=1, columnspan=2, row=1, sticky=EW)
 username_label = Label(text='Email/Username:', bg='white')
 username_label.grid(column=0, row=2)
 username_entry = Entry()
+username_entry.insert(0, "notxap55@yahoo.com")
 username_entry.grid(column=1, columnspan=2, row=2, sticky=EW)
 
 password_label = Label(text='Password:', bg='white')
