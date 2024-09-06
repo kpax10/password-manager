@@ -1,7 +1,9 @@
+from textwrap import indent
 from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 #Password Generator Project
 def generate_password():
@@ -25,22 +27,35 @@ def generate_password():
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     website = website_entry.get()
-    username = username_entry.get()
+    email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+            "email": email,
+            "password": password
+        }
+    }
 
-    if website == '' or username == '' or password == '':
+    if website == '' or email == '' or password == '':
         messagebox.showwarning('Warning', "Please don't leave any fields empty!")
         return
 
-    response = messagebox.askokcancel(title=website, message="Save site details?")
 
-    if response:
-        with open('data.txt', 'a') as file:
-            file.write(f"{website} | {username} | {password}\n")
+    try:
+        with open('data.json', 'r') as data_file:
+            data = json.load(data_file) #Reading old data
+            data.update(new_data) #Update old data w/ new data
+        with open('data.json', 'w') as data_file:
+            json.dump(data, data_file, indent=4) #Save updated data
 
-        website_entry.delete(0, END)
-        password_entry.delete(0, END)
-        website_entry.focus_set()
+    except FileNotFoundError:
+        with open('data.json', 'w') as data_file:
+            json.dump(new_data, data_file, indent=4) #Write new file and save data
+
+
+    website_entry.delete(0, END)
+    password_entry.delete(0, END)
+    website_entry.focus_set()
 
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
@@ -58,11 +73,11 @@ website_entry = Entry()
 website_entry.focus_set()
 website_entry.grid(column=1, columnspan=2, row=1, sticky=EW)
 
-username_label = Label(text='Email/Username:', bg='white')
-username_label.grid(column=0, row=2)
-username_entry = Entry()
-username_entry.insert(0, "notxap55@yahoo.com")
-username_entry.grid(column=1, columnspan=2, row=2, sticky=EW)
+email_label = Label(text='Email/Username:', bg='white')
+email_label.grid(column=0, row=2)
+email_entry = Entry()
+email_entry.insert(0, "notxap55@yahoo.com")
+email_entry.grid(column=1, columnspan=2, row=2, sticky=EW)
 
 password_label = Label(text='Password:', bg='white')
 password_label.grid(column=0, row=3)
