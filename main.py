@@ -23,7 +23,6 @@ def generate_password():
     password = ''.join(password_list)
     password_entry.insert(0, password)
     pyperclip.copy(password)
-
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 def save():
     website = website_entry.get()
@@ -56,7 +55,9 @@ def save():
     website_entry.delete(0, END)
     password_entry.delete(0, END)
     website_entry.focus_set()
-
+# ----------------------------- SEARCH -------------------------------- #
+def search():
+    print('search')
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title('Password Manager')
@@ -71,7 +72,10 @@ website_label = Label(text='Website:', bg='white')
 website_label.grid(column=0, row=1)
 website_entry = Entry()
 website_entry.focus_set()
-website_entry.grid(column=1, columnspan=2, row=1, sticky=EW)
+website_entry.grid(column=1, row=1, sticky=EW)
+
+search_button = Button(text='Search', padx=0, pady=0, highlightthickness=0, bg='white', command=search)
+search_button.grid(column=2, row=1, sticky=EW)
 
 email_label = Label(text='Email/Username:', bg='white')
 email_label.grid(column=0, row=2)
