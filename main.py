@@ -60,8 +60,9 @@ def find_password():
     user_search_text = website_entry.get()
     with open('data.json', 'r') as data_file:
         data = json.load(data_file)
-        if user_search_text in data:
-            found_data = data[user_search_text]
+        if user_search_text.lower() in data:
+            matching_data = data[user_search_text]
+            print(matching_data)
     #check if the user's text entry matches an item in the data.json
         #if yes, show a messagebox with the website's name and password
     #catch an exception trying to access the data.json showing a messagebox, 'No data file found'
