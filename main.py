@@ -55,18 +55,18 @@ def save():
         website_entry.focus_set()
 # ----------------------------- SEARCH -------------------------------- #
 def find_password():
-    user_search_text = website_entry.get()
+    user_search_text = website_entry.get().lower()
     try:
         with open('data.json', 'r') as data_file:
             data = json.load(data_file)
-            for website in data:
-                if website.lower() == user_search_text.lower():
-                    matching_site = data[website]
-                    messagebox.showinfo(title=user_search_text.title(),message=f"Email: {matching_site['email']}\nPassword: {matching_site['password']}")
-                    return
     except FileNotFoundError:
         messagebox.showinfo(title="Warning", message="No Data File Found")
     else:
+        for website in data:
+            if website.lower() == user_search_text:
+                matching_site = data[website]
+                messagebox.showinfo(title=user_search_text.title(),message=f"Email: {matching_site['email']}\nPassword: {matching_site['password']}")
+                return
         messagebox.showinfo(title='Warning', message="No details for the website exist")
 
 # ---------------------------- UI SETUP ------------------------------- #
