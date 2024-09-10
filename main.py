@@ -39,7 +39,6 @@ def save():
         messagebox.showwarning('Warning', "Please don't leave any fields empty!")
         return
 
-
     try:
         with open('data.json', 'r') as data_file:
             data = json.load(data_file) #Reading old data
@@ -50,23 +49,26 @@ def save():
     except FileNotFoundError:
         with open('data.json', 'w') as data_file:
             json.dump(new_data, data_file, indent=4) #Write new file and save data
-
-
-    website_entry.delete(0, END)
-    password_entry.delete(0, END)
-    website_entry.focus_set()
+    finally:
+        website_entry.delete(0, END)
+        password_entry.delete(0, END)
+        website_entry.focus_set()
 # ----------------------------- SEARCH -------------------------------- #
 def find_password():
     user_search_text = website_entry.get()
-    with open('data.json', 'r') as data_file:
-        data = json.load(data_file)
-        if user_search_text.lower() in data:
-            matching_data = data[user_search_text]
-            print(matching_data)
-    #check if the user's text entry matches an item in the data.json
-        #if yes, show a messagebox with the website's name and password
-    #catch an exception trying to access the data.json showing a messagebox, 'No data file found'
-    #if the website does not exist in the data.json, show a messagebox that reads "No details for the website exist
+    try:
+        with open('data.json', 'r') as data_file:
+            data = json.load(data_file)
+            for website in data:
+                if website.lower() == user_search_text.lower():
+                    matching_site = data[website]
+                    messagebox.showinfo(title=user_search_text.title(),message=f"Email: {matching_site['email']}\nPassword: {matching_site['password']}")
+                    return
+    except FileNotFoundError:
+        messagebox.showinfo(title="Warning", message="No Data File Found")
+    else:
+        messagebox.showinfo(title='Warning', message="No details for the website exist")
+
 # ---------------------------- UI SETUP ------------------------------- #
 window = Tk()
 window.title('Password Manager')
@@ -101,10 +103,6 @@ password_button.grid(column=2, row=3, sticky=EW)
 
 add_button = Button(text='Add', bg='white', highlightthickness=0, pady=0, command=save)
 add_button.grid(column=1, columnspan=2, row=4, sticky=EW)
-
-
-
-
 
 
 window.mainloop()
